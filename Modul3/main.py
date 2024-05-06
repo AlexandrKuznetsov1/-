@@ -9,6 +9,18 @@ def test(txt, *values):
 test('Alexandr', 11, 8, 1975)
 print(type(test)) # при вызове печати функции внутри функции осуществляется проверка ее работоспособности
                     # и значения переданные в нее не отражаются
+def test(txt = "", *args, **values):
+    bool()
+    if txt:
+        print(txt)
+        #return (txt)
+        if args:
+            print(args)
+            #return (txt)
+            if values:
+                print(values)
+                    #return (values)
+test('Alex', 11, 8, 1975, namber = 1)
 
 print('задача 2')
 def factorial(n): # создаем функцию принимающую значение факториала
