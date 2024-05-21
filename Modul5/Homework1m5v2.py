@@ -9,13 +9,20 @@
 #Полученный код напишите в ответ к домашему заданию
 
 class House: #Создан новый класс House
+    def __init__(self):
+        self.numberOfFloors = 10  # Задан новый атрибут numberOfFloors = 10
     def __add__(self, item):
-        self.numberOfFloors = 10 #Задан новый атрибут numberOfFloors = 10
         print("Текущий этаж равен :", item)
-my_house = House()
 
-for i in range(1, 11):
-    my_house.__add__(i)
+
+my_house = House()
+a = 0
+while a < my_house.numberOfFloors:
+    a = a + 1
+    my_house.__add__(a)
+    continue
+
+
 
 
 
