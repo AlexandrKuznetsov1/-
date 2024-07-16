@@ -1,123 +1,101 @@
 # -*- coding: utf-8 -*-
 
-# Домашнее задание по теме "Очереди для обмена данными между потоками."
+# "Многопроцессное программирование"
 # Цель задания:
 #
-# Освоить механизмы создания потоков и очередей для обмена данных между ними в Python.
-# Практически применить знания, создав и запустив несколько потоков и очередь.
+# Освоить механизмы создания процессов в Python.
+# Практически применить знания, создав несколько параллельных процессов и запустив их.
 #
 # Задание:
-# Моделирование работы сети кафе с несколькими столиками и потоком посетителей,
-# прибывающих для заказа пищи и уходящих после завершения приема.
+# Моделирование программы для управления данными о движении товаров на складе и эффективной обработки запросов
+# на обновление информации в многопользовательской среде.
 #
-# Есть сеть кафе с несколькими столиками. Посетители приходят, заказывают еду, занимают столик, употребляют еду и уходят
-# Если столик свободен, новый посетитель принимается к обслуживанию, иначе он становится в очередь на ожидание.
+# Представим, что у вас есть система управления складом, где каждую минуту поступают запросы на обновление информации
+# о поступлении товаров и отгрузке товаров.
+# Наша задача заключается в разработке программы, которая будет эффективно обрабатывать эти запросы
+# в многопользовательской среде, с использованием механизма мультипроцессорности для обеспечения
+# быстрой реакции на поступающие данные.
 #
-# Создайте 3 класса:
-# Table - класс для столов, который будет содержать следующие атрибуты: number(int) - номер стола,
-# is_busy(bool) - занят стол или нет.
+# Создайте класс WarehouseManager - менеджера склада, который будет обладать следующими свойствами:
+# Атрибут data - словарь, где ключ - название продукта, а значение - его кол-во. (изначально пустой)
+# Метод process_request - реализует запрос (действие с товаром), принимая request - кортеж.
+# Есть 2 действия: receipt - получение, shipment - отгрузка.
+# а) В случае получения данные должны поступить в data (добавить пару, если её не было и изменить значение ключа,
+# если позиция уже была в словаре)
+# б) В случае отгрузки данные товара должны уменьшаться (если товар есть в data и если товара больше чем 0).
 #
-# Cafe - класс для симуляции процессов в кафе. Должен содержать следующие атрибуты и методы:
-# Атрибуты queue - очередь посетителей (создаётся внутри init), tables список столов (поступает из вне).
-# Метод customer_arrival(self) - моделирует приход посетителя(каждую секунду).
-# Метод serve_customer(self, customer) - моделирует обслуживание посетителя. Проверяет наличие свободных столов,
-# в случае наличия стола - начинает обслуживание посетителя (запуск потока),
-# в противном случае - посетитель поступает в очередь. Время обслуживания 5 секунд.
-# Customer - класс (поток) посетителя. Запускается, если есть свободные столы.
-#
-# Так же должны выводиться текстовые сообщения соответствующие событиям:
-# Посетитель номер <номер посетителя> прибыл.
-# Посетитель номер <номер посетителя> сел за стол <номер стола>. (начало обслуживания)
-# Посетитель номер <номер посетителя> покушал и ушёл. (конец обслуживания)
-# Посетитель номер <номер посетителя> ожидает свободный стол. (помещение в очередь)
+# Метод run - принимает запросы и создаёт для каждого свой параллельный процесс,
+# запускает его(start) и замораживает(join).
 
-from threading import Thread, Lock
-import queue
+
+import multiprocessing
+from colorama import Fore, init
+init(autoreset=True)
 from time import sleep
-import threading
 
 
-class Table:
+class WarehouseManager:
+    data = {}
 
-    def __init__(self, number):
-        self.number = number
-        self.is_busy = False
-
-
-class Customer(Thread):
-    def __init__(self, number, table, que=None):
-        threading.Thread.__init__(self)
-        self.number = number
-        self.table = table
-        self.que = que
-
-    def run(self):
-        print(f"Посетитель номер {self.number} прибыл")
-
-        if self.que == 1:
-            print(f"Посетитель номер {self.number} ожидает свободный стол")
-            sleep(0.1)
-
-        self.table.is_busy = True
-        print(f"Посетитель номер {self.number} сел за стол {self.table.number} (начало обслуживания)")
-        sleep(5)
-        print(f"Посетитель номер {self.number} покушал и ушёл (конец обслуживания)")
-        sleep(0.1)
-        self.table.is_busy = False
+    def process_request(self, *request):
+        lock = request[-1]
+        lock.acquire()
 
 
-class Cafe:
+                # print(new_request)
+        try:
 
-    def __init__(self, tables):
-        self.queue = queue.Queue(maxsize=1)
-        self.tables = tables
+            for i in request[0]:
+                for j in i:
+                    current_request = j[1]
+                    name_product = j[0]
+                    quantity_product = j[-1]
+                    if current_request == 'receipt':
+                        if name_product not in self.data:
+                            self.data[name_product] = quantity_product
+                        else:
+                            self.data[name_product] += quantity_product
+                        # print(self.data)
 
-    def customer_arrival(self):
-        customer_max = 20
-        customer = 0
-        while customer < customer_max:
-            customer += 1
-            Cafe.serve_customer(self, customer)
+                    if current_request == "shipment":
+                        if name_product not in self.data:
+                            self.data[name_product] = quantity_product
+                        if self.data[name_product] >= quantity_product:
+                            self.data[name_product] -= quantity_product
+            # print(self.data)
+        finally:
+            sleep(1)
+            print(Fore.BLUE + 'Поэтому возвращаем сразу после окончания работы процесса из метода')
+            sleep(1)
+            print(Fore.RED + str(self.data))
             sleep(1)
 
-    def serve_customer(self, customer):
-        table_free = None
-        for j in self.tables:
-            if not j.is_busy:
-                table_free = j
-                break
-
-        if table_free:
-            customer1 = Customer(customer, table_free)
-            customer1.start()
-                # customer1.join()
-        else:
-            self.queue.put(customer)
-            # print(f"Посетитель номер {customer} ожидает свободный стол")
-            sleep(4)
-            table_free1 = None
-            for i in self.tables:
-                if not i.is_busy:
-                    table_free1 = i
-                    break
-            self.queue.get()
-            # print(customer)
-            customer2 = Customer(customer, table_free1, que=1)
-            customer2.start()
+            lock.release()
 
 
-# Создаем столики в кафе
-table1 = Table(1)
-table2 = Table(2)
-table3 = Table(3)
-tables = [table1, table2, table3]
+    def run(self, *args):
+        lock = multiprocessing.Lock()
+        if __name__ == '__main__':
+            process = multiprocessing.Process(target=self.process_request, args=(args, lock))
+            process.start()
+            process.join()
 
-# Инициализируем кафе
-cafe = Cafe(tables)
 
-# Запускаем поток для прибытия посетителей
-customer_arrival_thread = threading.Thread(target=cafe.customer_arrival)
-customer_arrival_thread.start()
+# Создаем менеджера склада
+manager = WarehouseManager()
 
-# Ожидаем завершения работы прибытия посетителей
-customer_arrival_thread.join()
+# Множество запросов на изменение данных о складских запасах
+requests = [
+    ("product1", "receipt", 100),
+    ("product2", "receipt", 150),
+    ("product1", "shipment", 30),
+    ("product3", "receipt", 200),
+    ("product2", "shipment", 50)
+]
+
+# Запускаем обработку запросов
+manager.run(requests)
+
+# Выводим обновленные данные о складских запасах
+print(f'так как изначально атрибут data = пустой{manager.data} и по завершении процессов остается {'{}'} manager.data'
+      f' возвращает {'{}'} чтобы получить данный результат необходимо self.data передать в глобальную переменную')
