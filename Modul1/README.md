@@ -1,2 +1,10 @@
 ### [Вернуться к содержанию](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/README.md)
 # Модуль 1. Практика GIT. Базовые структуры данных
+## [Практическое задание по уроку "Строки и индексация строк"](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/homework1.py)
+## [Практическое задание по теме "Переменные."](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/homework2.2.py)
+## [Практическое задание Строки и индексация строк](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/homework3.py)
+## [Практическая работа по уроку "Организация программ и методы строк."](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/homework4.py)
+## [Практическое задание по теме: "Неизменяемые и изменяемые объекты. Кортежи и списки"](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/homework5.py)
+## [Практическое задание по теме: "Словари и множества"](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/homework6.py)
+## [Дополнительное практическое задание по модулю: "Базовые структуры данных."](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/module1hard.py)
+## [зодиак](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul1/deb.py)
