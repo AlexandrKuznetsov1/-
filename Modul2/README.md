@@ -1,2 +1,11 @@
 ### [Вернуться к содержанию](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/README.md)
 # Модуль 2. Основные операторы
+## [стили кода](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/03_code_style%204.py)
+## [Поток выполнения программы](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/homework2m2.py)
+## [Цикл for](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/homework3m2.py)
+## [Фунлции в Python](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/homework4m2.py)
+## ["Условная конструкция. Операторы if, elif, else."](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/module_2_2.py)
+## [работа по уроку "Стиль кода часть II. Цикл While."](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/module_2_3.py)
+## ["Цикл for. Элементы списка. Полезные функции в цикле"](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/module_2_4.py)
+## ["Функции в Python.Функция с параметром"](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/module_2_5.py)
+## [HARD по модулю](https://github.com/AlexandrKuznetsov1/Practical_work/blob/master/Modul2/module2hard.py)
